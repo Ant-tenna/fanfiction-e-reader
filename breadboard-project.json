@@ -1,0 +1,507 @@
+{
+  "format": "velxio-project",
+  "version": 1,
+  "boards": [
+    {
+      "id": "esp32",
+      "boardKind": "esp32",
+      "x": 495.40700350438726,
+      "y": -133.76380640977393,
+      "activeFileGroupId": "group-esp32",
+      "languageMode": "arduino",
+      "serialBaudRate": 0
+    }
+  ],
+  "fileGroups": {
+    "group-esp32": [
+      {
+        "name": "sketch.ino",
+        "content": "#include <Wire.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_SSD1306.h>\n\n#define SCREEN_WIDTH 128\n#define SCREEN_HEIGHT 64 \n\n#define SENSOR_PIN 18 \n#define BTN_UP 32\n#define BTN_DOWN 33\n\nAdafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);\n\nconst int totalLines = 10;\nconst char* fanfiction[totalLines] = {\n  \"hello world, \",\n  \"it once said this \",\n  \"then it exploded... \",\n  \"sad very sad \",\n  \"then it revived \",\n  \"and then it found \",\n  \"its true love \",\n  \"... for more fanfics \",\n  \"like this dont forget \",\n  \"to share like and susc-\",\n\n};\n\nconst int MAXILINES = 6;\nint lineaActual = 0;\nbool pantallaApagada = false;\n\nbool lastStateUp = HIGH;\nbool lastStateDown = HIGH;\n\nvoid dibujarTexto(){\n  \n  oled.clearDisplay();\n  oled.setCursor(0, 0);\n\n  for(int i = 0; i < MAXILINES; i++){\n    int indice = lineaActual + i;\n    if(indice < totalLines){\n      oled.println(fanfiction[indice]);\n    }\n  }\n oled.display();\n}\n\nvoid setup() {\n  Serial.begin(115200);\n\n  pinMode(SENSOR_PIN, INPUT);\n  pinMode(BTN_UP, INPUT_PULLUP);\n  pinMode(BTN_DOWN, INPUT_PULLUP);\n\n  if (!oled.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {\n    Serial.println(F(\"failed to start SSD1306 OLED\"));\n    while (1);\n  }\n\n  oled.setCursor(0, 0);\n  oled.setTextSize(1);      \n  oled.setTextColor(WHITE); \n\n  dibujarTexto();\n\n  delay(2000);\n}\n\nvoid loop() {\n\n  int state = digitalRead(SENSOR_PIN);\n\n  if (state == LOW){\n    if(!pantallaApagada){\n      oled.clearDisplay();\n      oled.display();\n      pantallaApagada = true;\n    }\n    delay(50);\n    return;\n  }\n  else{\n    if(pantallaApagada){\n      pantallaApagada = false;\n      dibujarTexto();\n    }\n  }\n\n  bool up = digitalRead(BTN_UP);\n  bool down = digitalRead(BTN_DOWN);\n\n  if(lastStateUp == HIGH && up == LOW){\n    if (lineaActual > 0){\n      lineaActual--;\n      dibujarTexto();\n    }\n\n    delay(50);\n  }\n\n  lastStateUp = up;\n\n  if(lastStateDown == HIGH && down == LOW){\n    if (lineaActual < (totalLines - MAXILINES)){\n      lineaActual++;\n      dibujarTexto();\n    }\n\n    delay(50);\n  } \n\n  lastStateDown = down;\n\n  delay(10);\n}\n"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "breadboard_full_1783547827570_k6xs0tv92",
+      "metadataId": "breadboard-full",
+      "x": 579.341229477633,
+      "y": 116.46951882215147,
+      "properties": {
+        "rotation": 180
+      }
+    },
+    {
+      "id": "ssd1306_i2c_1783548098786_zyorhre5i",
+      "metadataId": "ssd1306-i2c",
+      "x": 966.6027785153605,
+      "y": -71.23176723796978,
+      "properties": {
+        "protocol": "i2c"
+      }
+    },
+    {
+      "id": "pushbutton_1783547861984_yyoknq0tb",
+      "metadataId": "pushbutton",
+      "x": 674.241229477633,
+      "y": 200.96951882215166,
+      "properties": {
+        "color": "red",
+        "pressed": false,
+        "label": "",
+        "xray": false,
+        "rotation": 90
+      },
+      "attachedTo": {
+        "breadboardId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinMap": {
+          "1.l": "I52",
+          "2.l": "I54",
+          "1.r": "E52",
+          "2.r": "E54"
+        }
+      }
+    },
+    {
+      "id": "pushbutton_1783743026818_35bww4id6",
+      "metadataId": "pushbutton",
+      "x": 770.241229477633,
+      "y": 210.9695188221516,
+      "properties": {
+        "color": "blue",
+        "pressed": false,
+        "label": "",
+        "xray": false,
+        "rotation": 90
+      },
+      "attachedTo": {
+        "breadboardId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinMap": {
+          "1.l": "H42",
+          "2.l": "H44",
+          "1.r": "D42",
+          "2.r": "D44"
+        }
+      }
+    },
+    {
+      "id": "obstacle_avoidance_module_1783715082814_z1q0yaelx",
+      "metadataId": "obstacle-avoidance-module",
+      "x": 346.148473532325,
+      "y": -126.6967139523769,
+      "properties": {
+        "distance": 100
+      }
+    }
+  ],
+  "wires": [
+    {
+      "waypoints": [],
+      "id": "wire-1783549047765",
+      "start": {
+        "componentId": "esp32",
+        "pinName": "22",
+        "x": 629.4070035043873,
+        "y": -91.76380640977393
+      },
+      "end": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "SCL",
+        "x": 1052.6027785153606,
+        "y": -60.23176723796978
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 782.3623828607136,
+          "y": -45.04544375316898
+        }
+      ],
+      "id": "wire-1783549096167",
+      "start": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "SDA",
+        "x": 1062.6027785153606,
+        "y": -60.23176723796978
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "21",
+        "x": 629.4070035043873,
+        "y": -53.763806409773935
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1783714764609",
+      "start": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "VCC",
+        "x": 1042.6027785153606,
+        "y": -60.23176723796978
+      },
+      "end": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "VCC",
+        "x": 1042.6027785153606,
+        "y": -60.23176723796978
+      },
+      "color": "#cc0000"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1783714916637",
+      "start": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "GND",
+        "x": 1032.6027785153606,
+        "y": -60.23176723796978
+      },
+      "end": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "GND",
+        "x": 1032.6027785153606,
+        "y": -60.23176723796978
+      },
+      "color": "#000000"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1783714917980",
+      "start": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "GND",
+        "x": 1032.6027785153606,
+        "y": -60.23176723796978
+      },
+      "end": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "GND",
+        "x": 1032.6027785153606,
+        "y": -60.23176723796978
+      },
+      "color": "#000000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 656.295260263065,
+          "y": 60.756606470853235
+        }
+      ],
+      "id": "wire-1783714947001",
+      "start": {
+        "componentId": "esp32",
+        "pinName": "GND2",
+        "x": 629.4070035043873,
+        "y": 60.236193590226065
+      },
+      "end": {
+        "componentId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinName": "BN57",
+        "x": 695.7412294776329,
+        "y": 162.4695188221515
+      },
+      "color": "#000000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 1038.7315219932984,
+          "y": -79.00802148115147
+        },
+        {
+          "x": 1158.910936350224,
+          "y": -70.71978600826006
+        }
+      ],
+      "id": "wire-1783714992394",
+      "start": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "VCC",
+        "x": 1042.6027785153606,
+        "y": -60.23176723796978
+      },
+      "end": {
+        "componentId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinName": "BP5",
+        "x": 1194.941229477633,
+        "y": 175.46951882215146
+      },
+      "color": "#cc0000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 1020.7736784687003,
+          "y": -60.23176723796978
+        },
+        {
+          "x": 1020.7736784687003,
+          "y": -76.245276323521
+        },
+        {
+          "x": 946.6254475982872,
+          "y": -76.245276323521
+        },
+        {
+          "x": 946.6254475982872,
+          "y": -76.05994097684598
+        },
+        {
+          "x": 945.341229477633,
+          "y": -76.05994097684598
+        }
+      ],
+      "id": "wire-1783715004608",
+      "start": {
+        "componentId": "ssd1306_i2c_1783548098786_zyorhre5i",
+        "pinName": "GND",
+        "x": 1032.6027785153606,
+        "y": -60.23176723796978
+      },
+      "end": {
+        "componentId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinName": "BN31",
+        "x": 945.341229477633,
+        "y": 162.46951882215149
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1783716576863",
+      "start": {
+        "componentId": "esp32",
+        "pinName": "33",
+        "x": 501.40700350438726,
+        "y": -28.763806409773935
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "33",
+        "x": 501.40700350438726,
+        "y": -28.763806409773935
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 437.972804261776,
+          "y": 226.27026416656997
+        },
+        {
+          "x": 464.7248063706767,
+          "y": -27.086932276548282
+        }
+      ],
+      "id": "wire-1783744834466",
+      "start": {
+        "componentId": "pushbutton_1783547861984_yyoknq0tb",
+        "pinName": "2.r",
+        "x": 724.741229477633,
+        "y": 275.46951882215166
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "33",
+        "x": 501.40700350438726,
+        "y": -28.763806409773935
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 429.97763989496923,
+          "y": 287.7174743368731
+        },
+        {
+          "x": 444.4192623098558,
+          "y": -38.78877156490998
+        }
+      ],
+      "id": "wire-1783744862912",
+      "start": {
+        "componentId": "pushbutton_1783743026818_35bww4id6",
+        "pinName": "2.r",
+        "x": 820.741229477633,
+        "y": 285.4695188221516
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "32",
+        "x": 501.40700350438726,
+        "y": -40.763806409773935
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1783890466658",
+      "start": {
+        "componentId": "pushbutton_1783743026818_35bww4id6",
+        "pinName": "1.l",
+        "x": 839.741229477633,
+        "y": 218.4695188221516
+      },
+      "end": {
+        "componentId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinName": "BN42",
+        "x": 839.7412294776329,
+        "y": 162.46951882215149
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1783890566547",
+      "start": {
+        "componentId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinName": "BN52",
+        "x": 743.7412294776329,
+        "y": 162.4695188221515
+      },
+      "end": {
+        "componentId": "pushbutton_1783547861984_yyoknq0tb",
+        "pinName": "1.l",
+        "x": 743.741229477633,
+        "y": 208.46951882215166
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 670.9017956731244,
+          "y": 82.1758610412074
+        }
+      ],
+      "id": "wire-1783890761535",
+      "start": {
+        "componentId": "esp32",
+        "pinName": "3V3",
+        "x": 629.4070035043873,
+        "y": 73.23619359022607
+      },
+      "end": {
+        "componentId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinName": "BP60",
+        "x": 666.941229477633,
+        "y": 175.4695188221515
+      },
+      "color": "#cc0000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 372.055293708313,
+          "y": -23.4322006312659
+        },
+        {
+          "x": 372.055293708313,
+          "y": 46.386950446676494
+        },
+        {
+          "x": 394.13998711974995,
+          "y": 175.97453531883096
+        },
+        {
+          "x": 641.3773862345465,
+          "y": 175.97453531883096
+        }
+      ],
+      "id": "wire-1783715348437",
+      "start": {
+        "componentId": "obstacle_avoidance_module_1783715082814_z1q0yaelx",
+        "pinName": "VCC",
+        "x": 392.148473532325,
+        "y": -48.696713952376896
+      },
+      "end": {
+        "componentId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinName": "BP63",
+        "x": 638.141229477633,
+        "y": 175.4695188221515
+      },
+      "color": "#cc0000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 367.1035442976687,
+          "y": -23.4322006312659
+        },
+        {
+          "x": 367.1035442976687,
+          "y": 155.01344804989984
+        },
+        {
+          "x": 641.3773862345465,
+          "y": 155.01344804989984
+        }
+      ],
+      "id": "wire-1783715358108",
+      "start": {
+        "componentId": "obstacle_avoidance_module_1783715082814_z1q0yaelx",
+        "pinName": "GND",
+        "x": 377.148473532325,
+        "y": -48.696713952376896
+      },
+      "end": {
+        "componentId": "breadboard_full_1783547827570_k6xs0tv92",
+        "pinName": "BN63",
+        "x": 638.141229477633,
+        "y": 162.4695188221515
+      },
+      "color": "#000000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 315.92730863039696,
+          "y": -48.696713952376896
+        },
+        {
+          "x": 315.80129030694377,
+          "y": -48.696713952376896
+        },
+        {
+          "x": 315.80129030694377,
+          "y": -214.04440335832916
+        },
+        {
+          "x": 675.244524831344,
+          "y": -214.04440335832916
+        },
+        {
+          "x": 675.244524831344,
+          "y": -23.800319994264594
+        },
+        {
+          "x": 629.4070035043873,
+          "y": -23.800319994264594
+        }
+      ],
+      "id": "wire-1783715468527",
+      "start": {
+        "componentId": "obstacle_avoidance_module_1783715082814_z1q0yaelx",
+        "pinName": "OUT",
+        "x": 362.148473532325,
+        "y": -48.696713952376896
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "18",
+        "x": 629.4070035043873,
+        "y": -28.763806409773935
+      },
+      "color": "#22c55e"
+    }
+  ],
+  "activeBoardId": "esp32",
+  "ignoreStock": false
+}
