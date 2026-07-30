@@ -5,7 +5,7 @@
 ![Fanfiction e-reader](screenshot.png)
 
 
-> Built in [Breadboard](https://breadboard.hackclub.com), a Hack Club program. This project took ~6.5 hours of work.
+> Built in [Breadboard](https://breadboard.hackclub.com), a Hack Club program. This project took ~7 hours of work.
 
 
 
@@ -21,7 +21,7 @@ The circuit is captured in `breadboard-project.json`, and the firmware that runs
 
 ## How To Use It
 
-With the buttons you can move up and down to see more lines, with the text being displayed on the oled mini screen. And if something is near, the screen will turn black quickly, until the thing (or person) that was near, moves away.
+With the buttons you can move up and down to see more lines, with the text being displayed on the oled mini screen while also showing how is the light for reading. And if something is near, the screen will turn on a panic mode, displaying the actual temperature on the screen, until the thing (or person) that was near, moves away. You can also activate this with the black button. Also each time you change the "page" or panic mode is activated a buzzer emits a "beep" sound.
 
 
 ## Demo
@@ -40,8 +40,13 @@ The editor snapshot is in `breadboard-project.json`.
 | Part | Quantity |
 | --- | --- |
 | breadboard-full | 1 |
+| buzzer-active | 1 |
+| dht11 | 1 |
+| led-red | 1 |
 | obstacle-avoidance-module | 1 |
-| pushbutton | 2 |
+| photoresistor-sensor | 1 |
+| pushbutton | 3 |
+| resistor | 1 |
 | ssd1306-i2c | 1 |
 
 
@@ -59,7 +64,7 @@ Build journal entries are kept in [`journals.md`](journals.md).
 
 
 
-*Made in [Breadboard](https://breadboard.hackclub.com) — 6.5h of work*
+*Made in [Breadboard](https://breadboard.hackclub.com) — 7h of work*
 
 
 
