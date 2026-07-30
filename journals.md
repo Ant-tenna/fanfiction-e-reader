@@ -45,3 +45,39 @@ I FIXED IT!!!! after consulting with a friend and staring at the screen for a lo
 ## Jul 14, 2026, 2:22 AM
 
 I have been focusing on writting the README on the github project as well as setting everything to ship my project!
+
+---
+
+## Jul 26, 2026, 4:14 AM
+
+these few days, i have been trying to improve my design due to it not meeting the requirments for the esp32 kit :c. But i'll make it better this time!!m
+
+---
+
+## Jul 28, 2026, 1:04 AM
+
+I have been doing connections and coding a bit! I want to get this up again as soon as possible, but im facing a problem that i dont know what does it cause it. It says "dc spice 16 nets" i dunno what that means and now that i realize it now says 17! i need to understand what does that mean now
+
+---
+
+## Jul 29, 2026, 2:40 AM
+
+I discovered that, first, the message didn't mean anything bad anddd that there's a reason for why pin references are a thing and that i just cant go and connect anything to a random pin... I had to change the button from 35 to 25 due to it only being analogical (i think). I'm surprised that this hasn't given me an error before, but from now on, i'll try to understand how each pin works and where to connect the stuff!
+
+---
+
+## Jul 29, 2026, 11:07 PM
+
+I have been debugging so i can finally re-submit, i have fixed most of the things, but now i have two main problems: the led and the screen. The led doesn't simply turn on and the screen stays most of the time on panic mode when it shouldn't be. So now i'm fixing those problems now, i hope i got rid of them quickly D:
+
+---
+
+## Jul 29, 2026, 11:49 PM
+
+I don't know what to do for the led. I have tried everything it makes me sad and i lowkey want to cry so i have decided that i'm not going to put led. I'm going to focus on the screen problems and i just hope my project can be submited anyways.
+
+---
+
+## Jul 30, 2026, 12:18 AM
+
+The screen should work fine now, i have tested it and it did. I want to submit now but i cant get rid off that led and resistor, when i try to press it it only shows the breadboard thing, but i hope it doesn't affect on anything. I hope this time it does count, this was my first program on hackclubbbbbbb there's no way i can mess this up :sob:
